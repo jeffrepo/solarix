@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_solarix_nomina_wizard" model="ir.ui.view">
+            <field name="name">view.solarix.nomina.wizard</field>
+            <field name="model">solarix.nomina_wizard</field>
+            <field name="arch" type="xml">
+            <form string="Generar reporte nomina">
+                <group string="Fechas">
+                    <field name="fecha_inicio"/>
+                    <field name="fecha_fin"/>
+                    <field name="workcenter_ids" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button name="print_report" string="Print"  type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+            </field>
+    </record>
+
+    <record id="action_solarix_report" model="ir.actions.report">
+        <field name="name">Reporte nomina</field>
+        <field name="model">solarix.nomina</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">solarix.nomina</field>
+        <field name="report_file">solarix.nomina</field>
+    </record>
+    
+    <record id="launch_reporte_nomina_wizard" model="ir.actions.act_window">
+        <field name="name">Reporte nomina</field>
+        <field name="res_model">solarix.nomina_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_solarix_nomina_wizard"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+    </record>
+
+    <menuitem action="launch_reporte_nomina_wizard" id="menu_solarix_reporte_nomina" parent="mrp.menu_mrp_reporting"/>
+    
+</odoo>

@@ -13,6 +13,8 @@
     'depends': ['mrp'],
     'data': [
         "views/mrp_production_views.xml",
+        "views/nomina.xml",
+        "wizard/solarix_nomina_wizard_views.xml",
     ],
     'demo': [
     ],

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="nomina">
+        <t t-call="web.html_container">
+            <t t-set="data_report_margin_top" t-value="12"/>
+            <t t-set="data_report_header_spacing" t-value="9"/>
+            <t t-set="data_report_dpi" t-value="110"/>
+            
+            <style>
+                
+                .logo img {
+                    height: 50px;  /* Adjust logo size */
+                }
+        
+                .encabezado {
+                    flex-grow: 1;
+                    text-align: center;
+                }
+                .left {
+                    float: left;
+                }
+                .right {
+                    float: right;
+                }
+                .clear {clear:both}
+            </style>
+            <div class="header">
+    
+            </div>
+            <t t-set="dates" t-value="_get_today()"/>
+            <t t-set="orders" t-value="_get_info(fecha_inicio, fecha_fin, workcenter_ids)"/>
+            <div class="page">
+                <div class="logo">
+                    <img t-att-src="image_data_uri(user.company_id.logo)" style="max-width: 8rem; height: auto;" alt="Company Logo"/>
+                </div>
+                <div class="encabezado" align="center">
+                    <h4><span t-esc="user.company_id.name"/></h4>
+                </div>
+
+                <div class="fechas_info">
+                    <div class="left">
+                        <div>
+                            Fecha Inicio: <span t-esc="fecha_inicio"/>
+                        </div>
+                        <div>
+                            Fecha Fin: <span t-esc="fecha_fin"/>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div>
+                            Fecha y hora impresion: <span t-esc="dates[1]"/>
+                        </div>
+                        <!-- <div>
+                            Fecha impresion:<span t-esc="dates[0]"/>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="clear"/>
+                <div class="table_info">
+                    <t t-foreach="orders" t-as="wc">
+                        <div align="center">
+                            <h3>AREA: <span t-esc="orders[wc]['name']"/></h3>
+                        </div>
+                        <table style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">FECHA</th>
+                                    <th style="text-align:center">REFERENCIA</th>
+                                    <th style="text-align:center">O.P</th>
+                                    <th style="text-align:left">PRODUCTO</th>
+                                    <th style="text-align:left">OPERACION</th>
+                                    <th style="text-align:center">PIEZAS</th>
+                                    <th style="text-align:center">PRECIO UNITARIO</th>
+                                    <th style="text-align:center">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="orders[wc]['workcenter_orders']" t-as="wco">
+                                    <tr>
+                                        <td style="text-align:center;width:150px"><span t-esc="orders[wc]['workcenter_orders'][wco]['date']"/></td>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                    </tr>
+                                    <tr t-foreach="orders[wc]['workcenter_orders'][wco]['orders_data']" t-as="order">
+                                        <td></td>
+                                        <td style="text-align:center"><span t-esc="order['reference']"/></td>
+                                        <td style="text-align:center;width:150px"><span t-esc="order['op']"/></td>
+                                        <td style="text-align:left"><span t-esc="order['product']"/></td>
+                                        <td style="text-align:left"><span t-esc="order['operation']"/></td>
+                                        <td style="text-align:center"><span t-esc="order['quantity']"/></td>
+                                        <td style="text-align:center">$ <span t-esc="order['unit_price']" /></td>
+                                        <td style="text-align:center">$ <span t-esc="order['total']"/></td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td style="text-align:center"><span t-esc="orders[wc]['workcenter_orders'][wco]['date']"/></td>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                    <td style="text-align:center"><strong>Total</strong></td>
+                                    <td style="text-align:center">$ <span t-esc="orders[wc]['total']"/></td>
+                                </tr>                         
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+                
+            </div>
+        </t>
+    </template>
+
+</odoo>
