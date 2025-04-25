@@ -30,4 +30,4 @@ class MrpWorkOrder(models.Model):
     @api.depends('workcenter_id','qty_remaining','operation_id', 'production_id')
     def _compute_cost_production(self):
         for record in self:
-            record.cost_production = record.operation_id.x_studio_costo_operacion * record.production_id.product_qty
+            record.cost_production = record.operation_id.x_studio_costo_mob * record.production_id.product_qty
