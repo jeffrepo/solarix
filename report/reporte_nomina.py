@@ -30,14 +30,14 @@ class ReportSolarixNomina(models.AbstractModel):
                 if str(order_date) not in orders[workcenter]['workcenter_orders']:
                     orders[workcenter]['workcenter_orders'][str(order_date)] = {"date": str(order_date), "orders_data": []}
                     #orders[str(order_date)] = {"date": order_date, "orders_data": []}
-                total = order.operation_id.x_studio_costo_operacion * order.production_id.product_qty
+                total = order.operation_id.x_studio_costo_mob * order.production_id.product_qty
                 order_dic = {
                     "op": order.production_id.x_studio_op,
                     "reference": order.production_id.name,
                     "product": order.product_id.name,
                     "operation": order.name,
                     "quantity": order.production_id.product_qty,
-                    "unit_price": order.operation_id.x_studio_costo_operacion,
+                    "unit_price": order.operation_id.x_studio_costo_mob,
                     "total": total
                 }
                 
@@ -60,8 +60,8 @@ class ReportSolarixNomina(models.AbstractModel):
                 #     "op": order.production_id.name,
                 #     "product": order.product_id.name,
                 #     "quantity": order.production_id.product_qty,
-                #     "unit_price": order.operation_id.x_studio_costo_operacion,
-                #     "total": order.operation_id.x_studio_costo_operacion * order.production_id.product_qty
+                #     "unit_price": order.operation_id.x_studio_costo_mob,
+                #     "total": order.operation_id.x_studio_costo_mob * order.production_id.product_qty
                 # }
                 # orders[str(order_date)]["orders_data"].append(order_dic)
                 # logging.warning("fechas")
