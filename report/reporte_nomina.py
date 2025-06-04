@@ -13,13 +13,8 @@ class ReportSolarixNomina(models.AbstractModel):
     _name = 'report.solarix.nomina'
 
     def _get_op(self, date_start, date_end, workcenter_ids):
-        logging.warning(workcenter_ids)
-        logging.warning(date_start)
-        logging.warning(date_end)
-        order_ids = self.env["mrp.workorder"].sudo().search([("workcenter_id","in",workcenter_ids),("date_start",">=",date_start),("date_finished","<=", date_end)])
+        order_ids = self.env["mrp.workorder"].sudo().search([("workcenter_id","in",workcenter_ids),("date_start","!=", False),("date_start",">=",date_start),("date_finished","<=", date_end),("state","=","done")], order = "production_order_name asc")
         orders = {}
-        logging.warning("order_ids")
-        logging.warning(order_ids)
         if order_ids:
             for order in order_ids:
                 workcenter = order.workcenter_id.name
@@ -43,29 +38,7 @@ class ReportSolarixNomina(models.AbstractModel):
                 
                 orders[workcenter]['workcenter_orders'][str(order_date)]["orders_data"].append(order_dic)
                 orders[workcenter]['total'] += total
-                logging.warning("fechas")
-                logging.warning(order.date_start.date())
-        logging.warning(orders)
         return orders
-
-
-                # if workcenter not in orders:
-                #     orders[workcenter] = {'workcenter': workcenter, 'workcenter_orders': {}}
-                # order_date = order.date_start.date()
-                # if str(order_date) not in orders:
-                #     orders[str(order_date)] = {"date": order_date, "orders_data": []}
-                # date_start_end =  str(order.date_start) + " / " + str(order.date_finished)
-                # order_dic = {
-                #     "date_start_end": date_start_end,
-                #     "op": order.production_id.name,
-                #     "product": order.product_id.name,
-                #     "quantity": order.production_id.product_qty,
-                #     "unit_price": order.operation_id.x_studio_costo_mob,
-                #     "total": order.operation_id.x_studio_costo_mob * order.production_id.product_qty
-                # }
-                # orders[str(order_date)]["orders_data"].append(order_dic)
-                # logging.warning("fechas")
-                # logging.warning(order.date_start.date())
     
     def _get_today(self):
         today = datetime.now()
