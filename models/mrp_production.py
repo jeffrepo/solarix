@@ -26,6 +26,7 @@ class MrpWorkOrder(models.Model):
     _inherit = 'mrp.workorder'
 
     cost_production = fields.Float("Costo producción",compute='_compute_cost_production', store=True)
+    production_order_name = fields.Char(string="Production order name", related="production_id.name", store=True)
 
     @api.depends('workcenter_id','qty_remaining','operation_id', 'production_id')
     def _compute_cost_production(self):
