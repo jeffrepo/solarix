@@ -11,8 +11,8 @@ import xlsxwriter
 class solarix_nomina_wizard(models.TransientModel):
     _name = 'solarix.nomina_wizard'
 
-    fecha_inicio = fields.Date('Fecha inicio')
-    fecha_fin = fields.Date('Fecha fin')
+    fecha_inicio = fields.Datetime('Fecha inicio')
+    fecha_fin = fields.Datetime('Fecha fin')
     workcenter_ids = fields.Many2many("mrp.workcenter", string="Centros de trabajo")
 
     def print_report(self):

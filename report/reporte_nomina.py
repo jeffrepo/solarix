@@ -13,9 +13,10 @@ class ReportSolarixNomina(models.AbstractModel):
     _name = 'report.solarix.nomina'
 
     def _get_op(self, date_start, date_end, workcenter_ids):
-        date_format_1 = "%Y-%m-%d"
-        date_s = datetime.combine(datetime.strptime(date_start, date_format_1), datetime.min.time())
-        date_e = datetime.combine(datetime.strptime(date_end, date_format_1), datetime.max.time())
+        logging.warning(date_start)
+        logging.warning(date_end)
+        date_s = date_start
+        date_e = date_end
         order_ids = self.env["mrp.workorder"].sudo().search([("workcenter_id","in",workcenter_ids),("date_start","!=", False),("date_start",">=",date_s),("date_finished","<=", date_e),("state","=","done")], order = "production_order_name asc")
         orders = {}
         if order_ids:
@@ -23,8 +24,10 @@ class ReportSolarixNomina(models.AbstractModel):
                 workcenter = order.workcenter_id.name
                 if workcenter not in orders:
                     orders[workcenter] = {'name': workcenter, 'workcenter_orders': {}, 'total': 0}
-                
-                order_date = order.date_start.date()
+
+                logging.warning(order.date_start)
+                order_date = (order.date_start - timedelta(hours=6)).date()
+                logging.warning(order_date)
                 if str(order_date) not in orders[workcenter]['workcenter_orders']:
                     orders[workcenter]['workcenter_orders'][str(order_date)] = {"date": str(order_date), "orders_data": []}
                     #orders[str(order_date)] = {"date": order_date, "orders_data": []}
@@ -35,8 +38,8 @@ class ReportSolarixNomina(models.AbstractModel):
                     "product": order.product_id.name,
                     "operation": order.name,
                     "quantity": order.production_id.product_qty,
-                    "unit_price": order.operation_id.x_studio_costo_mob,
-                    "total": total
+                    "unit_price": round(order.operation_id.x_studio_costo_mob,2),
+                    "total": round(total,2)
                 }
                 
                 orders[workcenter]['workcenter_orders'][str(order_date)]["orders_data"].append(order_dic)
@@ -62,14 +65,19 @@ class ReportSolarixNomina(models.AbstractModel):
         logging.warning(workcenter_ids)
         company_id = self.env.user.company_id
         logging.warning(company_id)
+        timezone = pytz.timezone(self._context.get('tz') or self.env.user.tz or 'UTC')
+        date_s = datetime.fromisoformat(fecha_inicio) - timedelta(hours=6)
+        date_e = datetime.fromisoformat(fecha_inicio) - timedelta(hours=6)
         #folio_inicial = data.get('form', {}).get('folio_inicial', False)
         return {
             'doc_ids': docids,
             'doc_model': model,
             'docs': docs,
             '_get_info': self._get_op,
-            'fecha_inicio': fecha_inicio,
-            'fecha_fin': fecha_fin,
+            'fecha_inicio': date_s,
+            'fecha_inicio2': fecha_inicio,
+            'fecha_fin2': fecha_fin,
+            'fecha_fin': date_e,
             '_get_today': self._get_today,
             'workcenter_ids': workcenter_ids,
             'company_id': company_id,

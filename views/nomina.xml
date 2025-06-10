@@ -28,7 +28,7 @@
     
             </div>
             <t t-set="dates" t-value="_get_today()"/>
-            <t t-set="orders" t-value="_get_info(fecha_inicio, fecha_fin, workcenter_ids)"/>
+            <t t-set="orders" t-value="_get_info(fecha_inicio2, fecha_fin2, workcenter_ids)"/>
             <div class="page">
                 <div class="logo">
                     <img t-att-src="image_data_uri(user.company_id.logo)" style="max-width: 8rem; height: auto;" alt="Company Logo"/>
