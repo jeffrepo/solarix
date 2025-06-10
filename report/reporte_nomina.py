@@ -66,7 +66,7 @@ class ReportSolarixNomina(models.AbstractModel):
         company_id = self.env.user.company_id
         logging.warning(company_id)
         date_s = datetime.fromisoformat(fecha_inicio) - timedelta(hours=6)
-        date_e = datetime.fromisoformat(fecha_inicio) - timedelta(hours=6)
+        date_e = datetime.fromisoformat(fecha_fin) - timedelta(hours=6)
         #folio_inicial = data.get('form', {}).get('folio_inicial', False)
         return {
             'doc_ids': docids,
