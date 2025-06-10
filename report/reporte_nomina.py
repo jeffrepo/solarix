@@ -16,7 +16,7 @@ class ReportSolarixNomina(models.AbstractModel):
         date_format_1 = "%Y-%m-%d"
         date_s = datetime.combine(datetime.strptime(date_start, date_format_1), datetime.min.time())
         date_e = datetime.combine(datetime.strptime(date_end, date_format_1), datetime.max.time())
-        order_ids = self.env["mrp.workorder"].sudo().search([("workcenter_id","in",workcenter_ids),("date_start","!=", False),("date_start",">=",date_start),("date_finished","<=", date_end),("state","=","done")], order = "production_order_name asc")
+        order_ids = self.env["mrp.workorder"].sudo().search([("workcenter_id","in",workcenter_ids),("date_start","!=", False),("date_start",">=",date_s),("date_finished","<=", date_e),("state","=","done")], order = "production_order_name asc")
         orders = {}
         if order_ids:
             for order in order_ids:
