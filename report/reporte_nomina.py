@@ -65,7 +65,6 @@ class ReportSolarixNomina(models.AbstractModel):
         logging.warning(workcenter_ids)
         company_id = self.env.user.company_id
         logging.warning(company_id)
-        timezone = pytz.timezone(self._context.get('tz') or self.env.user.tz or 'UTC')
         date_s = datetime.fromisoformat(fecha_inicio) - timedelta(hours=6)
         date_e = datetime.fromisoformat(fecha_inicio) - timedelta(hours=6)
         #folio_inicial = data.get('form', {}).get('folio_inicial', False)
