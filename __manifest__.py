@@ -14,6 +14,7 @@
     'data': [
         "views/mrp_production_views.xml",
         "views/nomina.xml",
+        "views/mrp_bom_views.xml",
         "wizard/solarix_nomina_wizard_views.xml",
     ],
     'demo': [

@@ -6,6 +6,13 @@ class MrpProduction(models.Model):
 
     analytic_account_id = fields.Many2one('account.analytic.account', 'Cuenta analítica')
 
+    def _get_move_raw_values(self, product_id, product_uom_qty, product_uom, operation_id=False, bom_line=False):
+        res = super(MrpProduction, self)._get_move_raw_values(product_id, product_uom_qty, product_uom, operation_id, bom_line)
+        if res:
+            if ('location_id' and 'product_id') in res and (bom_line and bom_line.location_src_id):
+                res['location_id'] = bom_line.location_src_id.id if (bom_line and bom_line.location_src_id) else False,
+        return res
+
     def button_mark_done(self):
         res = super().button_mark_done()
         if self.analytic_account_id:
